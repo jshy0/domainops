@@ -12,6 +12,8 @@ app = typer.Typer()
 def run(
     idea: list[str] = typer.Argument(...),
     provider: str = typer.Option("ollama", "--provider", "-p", help="LLM provider: ollama (default, free) or openai"),
+    checker: str = typer.Option("rdap", "--checker", "-c", help="Domain checker: rdap (default, free) or godaddy"),
+    show_all: bool = typer.Option(False, "--show-all", "-a", help="Show taken and errored domains too"),
 ) -> None:
     idea_str = " ".join(idea)
     print_header(idea_str, provider)
@@ -26,9 +28,14 @@ def run(
 
     with console.status("[bold green]Checking domains...[/bold green]", spinner="dots"):
         from domainops.services.checker import check_domains
-        results = check_domains(domains)
+        from domainops.providers import rdap, godaddy
+        provider_map = {"rdap": rdap, "godaddy": godaddy}
+        results = check_domains(domains, provider=provider_map.get(checker, rdap))
 
-    print_results(results)
+    if not show_all:
+        results = [r for r in results if r.get("available") is True]
+
+    print_results(results, checker=checker)
 
 
 if __name__ == "__main__":
