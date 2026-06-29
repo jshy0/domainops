@@ -1,23 +1,23 @@
 # 🧠 DomainOps
 
-DomainOps is a multi-stage domain intelligence tool that turns startup ideas into ranked, brandable domain names using AI-assisted naming, real-time availability checks and scoring heuristics.
+DomainOps is a multi-stage domain intelligence tool that turns startup ideas into ranked, brandable domain names using AI-assisted naming and real-time availability checks.
 
 ## 🤔 What does it do?
 
 DomainOps helps founders, developers and indie hackers move from idea to shortlist without all the faff.
 
 ```
-Idea → Name generation → Domain expansion → Availability checks → Ranking
+Idea → Name generation → Domain expansion → Availability checks → Ranked results
 ```
 
 ## ⚙️ How it works
 
 The pipeline runs in stages:
 
-1. Generate candidate names from your idea
-2. Expand them into domain variants like `.com`, `.app` and `.ai`
-3. Check availability through domain providers
-4. Score and rank the results
+1. Generate candidate names from your idea using an LLM
+2. Expand them into domain variants across `.com`, `.io`, `.app`, `.ai` and `.co`
+3. Check availability in parallel via RDAP or GoDaddy
+4. Filter and display the best available options
 
 ## 💻 Example
 
@@ -26,38 +26,42 @@ uv run domainops run ai fitness coaching app
 ```
 
 ```
-🚀 Generating names via ollama...
-💡 Generated 10 names — expanding across 5 TLDs...
-🌐 Checking 50 domains...
+╭─────────────────────────────────────────────────────╮
+│ DomainOps  ai fitness coaching app  via ollama      │
+╰─────────────────────────────────────────────────────╯
+✓ Generated 10 names across 50 domains
 
-fitora.app        ✅ Available
-mindpulse.ai      ✅ Available
-trainly.com       ❌ Taken
-bodyforge.co      ✅ Available
+╭──────────────────────────────┬──────────────╮
+│ Domain                       │ Status       │
+├──────────────────────────────┼──────────────┤
+│ fitora.app                   │ ✅ Available │
+│ mindpulse.ai                 │ ✅ Available │
+│ trainly.com                  │ ✅ Available │
+╰──────────────────────────────┴──────────────╯
 ```
 
 ## ✨ Features
 
-- 🧠 AI-assisted name generation — works with Ollama (free) or OpenAI
-- 🌐 Real-time domain availability checking across `.com`, `.io`, `.app`, `.ai` and `.co`
-- ⚡ Async API execution for fast parallel checks
-- 📊 Scoring and ranking for a better shortlist
-- 💻 Clean CLI — no UI faff
-- 🔌 Modular pipeline architecture
+- 🧠 AI name generation — works with Ollama (free, local) or OpenAI
+- 🌐 Real-time availability checks across `.com`, `.io`, `.app`, `.ai` and `.co`
+- ⚡ Async parallel checks for speed
+- 🔌 Swappable domain checker — RDAP (free, no account) or GoDaddy (with pricing)
+- 💻 Clean CLI with Rich terminal output
+- 🏗️ Modular provider architecture
 
 ## 🧱 Architecture
 
 ```
-core/      → generation, scoring, orchestration
+core/      → generation, orchestration
 services/  → async domain checking engine
-providers/ → external APIs (GoDaddy, RDAP)
+providers/ → RDAP and GoDaddy implementations
 cli/       → command-line interface
 utils/     → formatting and helpers
 ```
 
 ## 🤷 Why does it exist?
 
-Most tools either generate names without validating them or check availability without ranking the results. DomainOps does both so you can make better decisions faster — without bouncing between five different tabs.
+Most tools either generate names without validating them or check availability without any intelligence behind it. DomainOps combines both so you can go from idea to shortlist in seconds — without bouncing between five different tabs.
 
 ## 🚀 Getting started
 
@@ -66,7 +70,9 @@ uv venv
 uv sync
 ```
 
-By default DomainOps uses **Ollama** — free, runs locally, no API key needed. Make sure you've got Ollama running with a model pulled:
+By default DomainOps uses **Ollama** for name generation and **RDAP** for domain checking — both free, no API keys required.
+
+Make sure Ollama is running with a model pulled:
 
 ```bash
 ollama pull llama3.2
@@ -79,23 +85,36 @@ Then run:
 uv run domainops run your idea here
 ```
 
-To use OpenAI instead, copy `.env.example` to `.env`, add your key and pass the flag:
+## 🎛️ Options
 
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--provider` / `-p` | `ollama` | LLM for name generation: `ollama` or `openai` |
+| `--checker` / `-c` | `rdap` | Domain checker: `rdap` or `godaddy` |
+| `--show-all` / `-a` | off | Show taken and errored domains too |
+
+**Use OpenAI for generation:**
 ```bash
 uv run domainops run your idea here --provider openai
 ```
 
+**Use GoDaddy checker (includes pricing):**
+```bash
+uv run domainops run your idea here --checker godaddy
+```
+
+> **Note:** GoDaddy API access requires either $20/month average spend or 50+ domains on your account. See [GoDaddy API docs](https://developer.godaddy.com/getstarted).
+
 ## 🗺️ Roadmap
 
-### v1 — MVP
+### v1 — MVP ✅
 - CLI tool
-- Async domain checker
+- Async domain checker with RDAP and GoDaddy support
 - LLM name generation (Ollama + OpenAI)
-- TLD expansion
+- TLD expansion across 5 extensions
 
 ### v2
 - Scoring and ranking engine
-- Provider plugin system
 - Bulk domain evaluation
 
 ### v3
@@ -107,7 +126,7 @@ uv run domainops run your idea here --provider openai
 
 Contributions are welcome for:
 
-- 🌐 New domain providers
+- 🌐 New domain checker providers
 - 🧠 Scoring improvements
 - 🔤 Name generation strategies
 - ⚡ Performance optimisations
