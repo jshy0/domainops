@@ -1,99 +1,117 @@
-# DomainOps
+# 🧠 DomainOps
 
-DomainOps is a multi-stage domain intelligence tool that turns startup ideas into ranked, brandable domain names using AI-assisted naming, real-time availability checks, and scoring heuristics.
+DomainOps is a multi-stage domain intelligence tool that turns startup ideas into ranked, brandable domain names using AI-assisted naming, real-time availability checks and scoring heuristics.
 
-## What it does
+## 🤔 What does it do?
 
-DomainOps helps founders, developers, and indie hackers move from idea to shortlist with less manual work.
+DomainOps helps founders, developers and indie hackers move from idea to shortlist without all the faff.
 
+```
 Idea → Name generation → Domain expansion → Availability checks → Ranking
+```
 
-## How it works
+## ⚙️ How it works
 
 The pipeline runs in stages:
 
-1. Generate candidate names from an idea
-2. Expand them into domain variants such as .com, .app, and .ai
+1. Generate candidate names from your idea
+2. Expand them into domain variants like `.com`, `.app` and `.ai`
 3. Check availability through domain providers
 4. Score and rank the results
 
-## Example
+## 💻 Example
 
 ```bash
-domainops "ai fitness coaching app"
+uv run domainops run ai fitness coaching app
 ```
 
-Example output:
+```
+🚀 Generating names via ollama...
+💡 Generated 10 names — expanding across 5 TLDs...
+🌐 Checking 50 domains...
 
-- Fitora.app — Available
-- MindPulse.ai — Available
-- Trainly.com — Taken
-- BodyForge.co — Available
+fitora.app        ✅ Available
+mindpulse.ai      ✅ Available
+trainly.com       ❌ Taken
+bodyforge.co      ✅ Available
+```
 
-## Features
+## ✨ Features
 
-- AI- and rule-based name generation
-- Real-time domain availability checking
-- Async API execution
-- Scoring and ranking for better shortlist quality
-- Clean CLI workflow
-- Modular architecture with separate pipeline stages
+- 🧠 AI-assisted name generation — works with Ollama (free) or OpenAI
+- 🌐 Real-time domain availability checking across `.com`, `.io`, `.app`, `.ai` and `.co`
+- ⚡ Async API execution for fast parallel checks
+- 📊 Scoring and ranking for a better shortlist
+- 💻 Clean CLI — no UI faff
+- 🔌 Modular pipeline architecture
 
-## Architecture
+## 🧱 Architecture
 
-- core: generation, scoring, orchestration
-- services: async domain checking
-- providers: external APIs such as GoDaddy and RDAP
-- cli: command-line interface
-- utils: formatting and helpers
+```
+core/      → generation, scoring, orchestration
+services/  → async domain checking engine
+providers/ → external APIs (GoDaddy, RDAP)
+cli/       → command-line interface
+utils/     → formatting and helpers
+```
 
-## Why it exists
+## 🤷 Why does it exist?
 
-Many existing tools either generate names without validating them or check availability without ranking the best options. DomainOps combines both so you can make better decisions faster.
+Most tools either generate names without validating them or check availability without ranking the results. DomainOps does both so you can make better decisions faster — without bouncing between five different tabs.
 
-## Installation
+## 🚀 Getting started
 
 ```bash
 uv venv
-uv add -r requirements.txt
+uv sync
 ```
 
-Run it with:
+By default DomainOps uses **Ollama** — free, runs locally, no API key needed. Make sure you've got Ollama running with a model pulled:
 
 ```bash
-uv run domainops run "your idea here"
+ollama pull llama3.2
+ollama serve
 ```
 
-## Roadmap
+Then run:
 
-### v1 (MVP)
+```bash
+uv run domainops run your idea here
+```
 
+To use OpenAI instead, copy `.env.example` to `.env`, add your key and pass the flag:
+
+```bash
+uv run domainops run your idea here --provider openai
+```
+
+## 🗺️ Roadmap
+
+### v1 — MVP
 - CLI tool
 - Async domain checker
-- Basic scoring system
-- LLM and rule-based name generation
+- LLM name generation (Ollama + OpenAI)
+- TLD expansion
 
 ### v2
-
+- Scoring and ranking engine
 - Provider plugin system
-- Improved scoring heuristics
 - Bulk domain evaluation
 
 ### v3
-
 - FastAPI layer
 - Web dashboard
 - Shareable results
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome for:
 
-- New domain providers
-- Scoring improvements
-- Name generation strategies
-- Performance optimizations
+- 🌐 New domain providers
+- 🧠 Scoring improvements
+- 🔤 Name generation strategies
+- ⚡ Performance optimisations
 
-## License
+## 📜 Licence
 
 MIT
