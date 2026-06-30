@@ -6,7 +6,7 @@ import httpx
 from domainops.providers import rdap
 
 
-async def _check_all(
+async def check_all(
     domains: list[str],
     provider: Any = rdap,
     client: httpx.AsyncClient | None = None,
@@ -30,4 +30,4 @@ async def _check_all(
 
 
 def check_domains(domains: list[str], provider: Any = rdap) -> list[dict[str, Any]]:
-    return asyncio.run(_check_all(domains, provider))
+    return asyncio.run(check_all(domains, provider))
