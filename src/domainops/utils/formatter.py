@@ -18,7 +18,7 @@ _CURRENCY_SYMBOLS: dict[str, str] = {
 }
 
 
-def _format_price(micros: Optional[int], currency: str) -> str:
+def format_price(micros: Optional[int], currency: str) -> str:
     if not micros:
         return "[dim]—[/dim]"
     symbol = _CURRENCY_SYMBOLS.get(currency, currency)
@@ -49,7 +49,7 @@ def print_results(results: list[dict[str, Any]], checker: str = "rdap") -> None:
         if r.get("available") is True:
             row: list[str] = [r["domain"], "[bold green]✅ Available[/bold green]"]
             if show_pricing:
-                row += [_format_price(r.get("price"), currency), _format_price(r.get("renewal_price"), currency)]
+                row += [format_price(r.get("price"), currency), format_price(r.get("renewal_price"), currency)]
             table.add_row(*row)
         elif r.get("available") is False:
             row = [r["domain"], "[red]❌ Taken[/red]"]
