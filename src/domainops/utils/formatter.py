@@ -27,7 +27,7 @@ def _format_price(micros: Optional[int], currency: str) -> str:
 
 def print_header(idea: str, provider: str) -> None:
     console.print(Panel(
-        f"[bold cyan]DomainOps[/bold cyan]  [dim]{idea}[/dim]  [dim]via {provider}[/dim]",
+        f"[bold cyan]DomainOps[/bold cyan]  [dim]{idea} · via {provider}[/dim]",
         expand=False
     ))
 
