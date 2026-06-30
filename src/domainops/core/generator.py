@@ -27,7 +27,7 @@ Generate brandable startup names for the user's idea.
 ## Exact format required:
 {"names":["Name1","Name2","Name3","Name4","Name5","Name6","Name7","Name8","Name9","Name10"]}
 
-Generate exactly 10-15 names. Always close the JSON object with }.
+Always close the JSON object with }.
 """
 
 _PROVIDER_DEFAULTS = {
@@ -42,7 +42,7 @@ def _make_client(provider: str) -> OpenAI:
     return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-def generate_names_llm(idea: str, provider: str = "ollama", model: str | None = None) -> list[str]:
+def generate_names_llm(idea: str, number: int, provider: str = "ollama", model: str | None = None) -> list[str]:
     client = _make_client(provider)
     resolved_model = model or _PROVIDER_DEFAULTS.get(provider, "llama3.2")
 
@@ -50,7 +50,7 @@ def generate_names_llm(idea: str, provider: str = "ollama", model: str | None = 
         model=resolved_model,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": f"Generate startup names for this idea: {idea}"},
+            {"role": "user", "content": f"Generate {number} startup names for this idea: {idea}"},
         ],
         temperature=0.9,
         response_format={"type": "json_object"},

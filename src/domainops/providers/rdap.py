@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Dict
+from typing import Any
 
 import httpx
 
@@ -9,7 +9,7 @@ _FALLBACK_URL = "https://rdap.org/domain"
 
 class RDAPProvider:
     def __init__(self) -> None:
-        self._tld_map: Dict[str, str] = {}
+        self._tld_map: dict[str, str] = {}
         self._loaded = False
         self._lock = asyncio.Lock()
 
@@ -36,7 +36,7 @@ class RDAPProvider:
         base = self._tld_map.get(tld)
         return f"{base}domain/{domain}" if base else f"{_FALLBACK_URL}/{domain}"
 
-    async def check_single(self, client: httpx.AsyncClient, domain: str) -> Dict[str, Any]:
+    async def check_single(self, client: httpx.AsyncClient, domain: str) -> dict[str, Any]:
         await self._load_bootstrap(client)
         url = self._rdap_url(domain)
         try:

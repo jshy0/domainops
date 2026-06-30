@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from rich import box
 from rich.console import Console
@@ -7,7 +7,7 @@ from rich.table import Table
 
 console = Console()
 
-_CURRENCY_SYMBOLS = {
+_CURRENCY_SYMBOLS: dict[str, str] = {
     "USD": "$",
     "GBP": "£",
     "EUR": "€",
@@ -32,7 +32,7 @@ def print_header(idea: str, provider: str) -> None:
     ))
 
 
-def print_results(results: List[Dict[str, Any]], checker: str = "rdap") -> None:
+def print_results(results: list[dict[str, Any]], checker: str = "rdap") -> None:
     show_pricing = checker == "godaddy"
 
     table = Table(box=box.ROUNDED, header_style="bold magenta")
@@ -47,7 +47,7 @@ def print_results(results: List[Dict[str, Any]], checker: str = "rdap") -> None:
         currency = r.get("currency", "USD")
 
         if r.get("available") is True:
-            row = [r["domain"], "[bold green]✅ Available[/bold green]"]
+            row: list[str] = [r["domain"], "[bold green]✅ Available[/bold green]"]
             if show_pricing:
                 row += [_format_price(r.get("price"), currency), _format_price(r.get("renewal_price"), currency)]
             table.add_row(*row)
