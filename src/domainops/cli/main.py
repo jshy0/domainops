@@ -3,7 +3,7 @@ from typing import Any
 import typer
 from dotenv import load_dotenv
 
-from domainops.core.expander import DEFAULT_TLDS, expand_domains
+from domainops.core.expander import DEFAULT_TLDS, expand_domains, parse_tlds
 from domainops.core.generator import generate_names_llm
 from domainops.providers import godaddy, rdap, whosedomains
 from domainops.services.checker import check_domains
@@ -38,7 +38,7 @@ def run(
     idea_str = " ".join(idea)
     print_header(idea_str, provider)
 
-    tld_list = [f".{t.strip().lstrip('.')}" for t in tlds.split(",") if t.strip()] or None
+    tld_list = parse_tlds(tlds)
 
     with console.status("[bold green]Generating names...[/bold green]", spinner="dots"):
         names = generate_names_llm(idea_str, provider=provider, number=number)
