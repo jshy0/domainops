@@ -1,7 +1,5 @@
 from domainops.core.expander import DEFAULT_TLDS, expand_domains, parse_tlds
 
-EXAMPLE = ["fitora"]
-
 class TestExpandDomains:
     def test_uses_default_tlds(self):
         result = expand_domains(["fitora"])
