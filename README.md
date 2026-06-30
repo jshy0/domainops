@@ -15,8 +15,8 @@ Idea → Name generation → Domain expansion → Availability checks → Ranked
 The pipeline runs in stages:
 
 1. Generate candidate names from your idea using an LLM
-2. Expand them into domain variants across `.com`, `.io`, `.app`, `.ai` and `.co`
-3. Check availability in parallel via RDAP or GoDaddy
+2. Expand them into domain variants across your chosen TLDs (default: `.com`, `.io`, `.app`, `.ai`, `.co`)
+3. Check availability in parallel via RDAP, whose.domains, or GoDaddy
 4. Filter and display the best available options
 
 ## 💻 Example
@@ -27,9 +27,9 @@ uv run domainops run ai fitness coaching app
 
 ```
 ╭─────────────────────────────────────────────────────╮
-│ DomainOps  ai fitness coaching app  via ollama      │
+│ DomainOps  ai fitness coaching app · via ollama     │
 ╰─────────────────────────────────────────────────────╯
-✓ Generated 10 names across 50 domains
+✓ Generated 10 names · 50 domains (.com, .io, .app, .ai, .co)
 
 ╭──────────────────────────────┬──────────────╮
 │ Domain                       │ Status       │
@@ -43,18 +43,18 @@ uv run domainops run ai fitness coaching app
 ## ✨ Features
 
 - 🧠 AI name generation — works with Ollama (free, local) or OpenAI
-- 🌐 Real-time availability checks across `.com`, `.io`, `.app`, `.ai` and `.co`
+- 🌐 Real-time availability checks across configurable TLDs
 - ⚡ Async parallel checks for speed
-- 🔌 Swappable domain checker — RDAP (free, no account) or GoDaddy (with pricing)
+- 🔌 Swappable domain checker — RDAP (free), whose.domains (free, bulk), or GoDaddy (with pricing)
 - 💻 Clean CLI with Rich terminal output
 - 🏗️ Modular provider architecture
 
 ## 🧱 Architecture
 
 ```
-core/      → generation, orchestration
+core/      → generation and TLD expansion
 services/  → async domain checking engine
-providers/ → RDAP and GoDaddy implementations
+providers/ → RDAP, whose.domains, and GoDaddy implementations
 cli/       → command-line interface
 utils/     → formatting and helpers
 ```
@@ -89,9 +89,16 @@ uv run domainops run your idea here
 
 | Flag | Default | Description |
 |------|---------|-------------|
+| `--number` / `-n` | `10` | Number of names to generate |
 | `--provider` / `-p` | `ollama` | LLM for name generation: `ollama` or `openai` |
-| `--checker` / `-c` | `rdap` | Domain checker: `rdap` or `godaddy` |
+| `--checker` / `-c` | `rdap` | Domain checker: `rdap`, `whosedomains`, or `godaddy` |
+| `--tlds` / `-t` | `com,io,app,ai,co` | Comma-separated TLDs to check |
 | `--show-all` / `-a` | off | Show taken and errored domains too |
+
+**Check only `.com` and `.ai`:**
+```bash
+uv run domainops run your idea here --tlds com,ai
+```
 
 **Use OpenAI for generation:**
 ```bash
@@ -109,9 +116,9 @@ uv run domainops run your idea here --checker godaddy
 
 ### v1 — MVP ✅
 - CLI tool
-- Async domain checker with RDAP and GoDaddy support
+- Async domain checker with RDAP, whose.domains, and GoDaddy support
 - LLM name generation (Ollama + OpenAI)
-- TLD expansion across 5 extensions
+- Configurable TLD expansion
 
 ### v2
 - Scoring and ranking engine
